@@ -1,15 +1,25 @@
 tinyterm
 ========
 
-A lightweight VTE-backed terminal emulator originally written by Sebastian Linke, forked & modified by Brandon Roberts.
+A lightweight VTE-backed terminal emulator originally written by
+Sebastian Linke, forked & modified by Brandon Roberts.
 
 ## Info
 
-Tinyterm is a terminal emulator written in C that uses VTE as its back-end. Primary not intended to be overloaded with design options such as opacity, background image, font color etc., but with useful abilities which you won't find in other terminal implementations, e.g. access to the contents of the terminal buffer, multiple terminal sessions in one window and much more.
+Tinyterm is a terminal emulator written in C that uses VTE as its
+back-end. It's not intended to be overloaded with design options such
+as opacity, background image, font color etc., but with useful abilities
+which you won't find in other terminal implementations, e.g. access to
+the contents of the terminal buffer, multiple terminal sessions in one
+window and much more.
 
-Tinyterm comes with no further windows. Instead constants are used to configure its behavior. The predefined ones should fit most of your needs anyway.
+Tinyterm comes with no further windows. Instead constants (see below)
+are used to configure its behavior. The predefined ones should fit most
+of your needs anyway.
 
-Note that Tinyterm is just a hobby project having a slow progress. Only a marginal number of features has been implemented yet. So don't expect too much and stay tuned for a release in the far future... ;-)
+Note that Tinyterm is just a hobby project having a slow progress. Only
+a marginal number of features has been implemented yet. So don't expect
+too much and stay tuned for a release in the far future... ;-)
 
 ## Configuration, features, and default options
 
@@ -31,9 +41,11 @@ Currently, options are configured in the `src/config.h.in` file.
 
 ## Building
 
-If everything goes as it should, you can run the build script, `build.sh`, which will run
-`cmake` and `make`. The binary `tinyterm` will be built in the `build/` directory. If you
-want to install it globally, you can move into the `build` directory and run `make install`.
+If everything goes as it should, you can run the build script,
+`build.sh`, which will run `cmake` and `make`. The binary `tinyterm`
+will be built in the `build/` directory. If you want to install it
+globally, you can move into the `build` directory and run `make
+install`.
 
 ## Memory Usage
 
