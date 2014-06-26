@@ -25,53 +25,6 @@
 #define TINYTERM_SCROLLBACK_LINES  10000
 #define TINYTERM_WORD_CHARS        "-A-Za-z0-9:./?%&#_=+@~"
 
-static void
-xdg_open_selection_cb (GtkClipboard *clipboard, const char *string, gpointer data)
-{
-    char *command;
-    wordexp_t result;
-    gboolean spawn;
-    GError *spawn_error = NULL;
-
-    command = g_strconcat ("xdg-open ", string, NULL);
-    switch (wordexp (command, &result, WRDE_NOCMD)) {
-        case 0:
-            break;
-        case WRDE_BADCHAR:
-            fprintf (stderr, "'%s' contains an invalid character\n", string);
-            goto finalize;
-        case WRDE_CMDSUB:
-            fprintf (stderr, "'%s' uses command substitution, which is not allowed\n", string);
-            goto finalize;
-        case WRDE_NOSPACE:
-            fprintf (stderr, "Could not allocate enough memory when parsing '%s'\n", string);
-            goto finalize;
-        case WRDE_SYNTAX:
-            fprintf (stderr, "Syntax error in '%s'\n", string);
-            goto finalize;
-    }
-    spawn = g_spawn_async (NULL, result.we_wordv, NULL, G_SPAWN_SEARCH_PATH,
-                           NULL, NULL, NULL, &spawn_error);
-    if (!spawn) {
-        fprintf (stderr, "%s\n", spawn_error->message);
-        g_error_free (spawn_error);
-    }
-    finalize:
-        wordfree (&result);
-}
-
-static void
-xdg_open_selection (GtkWidget *terminal)
-{
-    GdkDisplay *display;
-    GtkClipboard *clipboard;
-
-    vte_terminal_copy_primary (VTE_TERMINAL (terminal));
-    display = gtk_widget_get_display (terminal);
-    clipboard = gtk_clipboard_get_for_display (display, GDK_SELECTION_PRIMARY);
-    gtk_clipboard_request_text (clipboard, xdg_open_selection_cb, NULL);
-}
-
 static gboolean
 on_key_press (GtkWidget *terminal, GdkEventKey *event)
 {
@@ -83,9 +36,6 @@ on_key_press (GtkWidget *terminal, GdkEventKey *event)
             case GDK_V:
                 vte_terminal_paste_clipboard (VTE_TERMINAL (terminal));
                 return TRUE;
-            case GDK_X:
-                xdg_open_selection (terminal);
-                return TRUE;
         }
     }
     return FALSE;
@@ -95,8 +45,6 @@ int
 main (int argc, char *argv[])
 {
     GtkWidget *window, *terminal, *design;
-    GError *icon_error = NULL;
-    GdkPixbuf *icon;
     GdkGeometry geo_hints;
 
     /* Init gtk and all widgets */
@@ -106,7 +54,6 @@ main (int argc, char *argv[])
     design = gtk_hbox_new (FALSE, 0);
 
     /* Terminal font*/
-    //PangoFontDescription * font = pango_font_description_from_string("ProggyTinyTT Regular 12");
     PangoFontDescription * font = pango_font_description_from_string( TINYTERM_FONT);
     vte_terminal_set_font ( (VteTerminal *)terminal, font);
 
@@ -130,14 +77,14 @@ main (int argc, char *argv[])
                                    GDK_HINT_RESIZE_INC | GDK_HINT_MIN_SIZE | GDK_HINT_BASE_SIZE);
 
     /* Open a standard shell */
-    vte_terminal_fork_command (VTE_TERMINAL (terminal),
-                               NULL,  // binary to run (NULL=user's shell)
-                               NULL,  // arguments
-                               NULL,  // environment
-                               NULL,  // dir to start (NULL=CWD)
-                               TRUE,  // log session to lastlog
-                               TRUE,  // log session to utmp/utmpx log
-                               TRUE); // log session to wtmp/wtmpx log
+    vte_terminal_fork_command(VTE_TERMINAL (terminal),
+                               NULL,  
+                               NULL,  
+                               NULL,  
+                               NULL,
+                               FALSE,  
+                               FALSE,
+                               FALSE); 
 
     /* Connect signals */
     g_signal_connect (window, "delete-event", gtk_main_quit, NULL);

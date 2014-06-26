@@ -3,6 +3,7 @@ tinyterm
 
 A lightweight VTE-backed terminal emulator originally written by
 Sebastian Linke, forked & modified by Brandon Roberts.
+
 基於前兩位作者的成果再次修改而成。修改者爲 otakuchiyan（宅醬）
 
 ## Info
@@ -28,7 +29,7 @@ too much and stay tuned for a release in the far future... ;-)
 - 去掉了滾動欄和原本的配置文件 config.h.in
 - Copy selection with CTRL-SHIFT-C
 - Paste at cursor position with CTRL-SHIFT-V
-- Run selection via xdg-open with CTRL-SHIFT-X
+- CTRL-SHIFT-X 運行選擇內容的功能已經被去除
 - Intelligent selection behavior: A double-click will mark a word/path/email/url
 - Scrollback buffer initially set to 10000 lines
 
@@ -40,8 +41,9 @@ too much and stay tuned for a release in the far future... ;-)
 
 ## Building
 
-原先的 build.sh 已經被去除。
-cmake . && make
+原先的 build.sh 已經被去除。編譯命令爲：
+
+    cmake . && make
 
 ## Memory Usage
 
@@ -55,5 +57,6 @@ got compared to some other terminal emulators:
      5.8 MiB  +   1.2 MiB  =   7.0 MiB  xfce4-terminal
 
 htop 上的測試：
-    10M     舊版 tinyterm
-    9.5M    新版 tinyterm
+
+    11M + 9M = 20M  舊版 tinyterm
+    9M  + 7M = 16M  新版 tinyterm
