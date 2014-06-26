@@ -9,7 +9,6 @@ set (SCROLLBACK_LINES 10000)
 set (WORD_CHARS "-A-Za-z0-9:./?%&#_=+@~")
 
 set (SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
-configure_file ("${SOURCE_DIR}/config.h.in" "${SOURCE_DIR}/config.h")
 
 add_executable (tinyterm "${SOURCE_DIR}/tinyterm.c")
 target_link_libraries (tinyterm ${VTE_LIBRARIES})
@@ -17,5 +16,3 @@ target_link_libraries (tinyterm ${VTE_LIBRARIES})
 install (TARGETS tinyterm
          RUNTIME DESTINATION bin)
 
-install (FILES "${SOURCE_DIR}/tinyterm.png"
-         DESTINATION share/pixmaps)

@@ -20,7 +20,10 @@
 #include <gdk/gdkkeysyms.h>
 #include <vte/vte.h>
 #include <wordexp.h>
-#include "config.h"
+
+#define TINYTERM_FONT              "Terminus Regular 10" 
+#define TINYTERM_SCROLLBACK_LINES  10000
+#define TINYTERM_WORD_CHARS        "-A-Za-z0-9:./?%&#_=+@~"
 
 static void
 xdg_open_selection_cb (GtkClipboard *clipboard, const char *string, gpointer data)
@@ -91,7 +94,7 @@ on_key_press (GtkWidget *terminal, GdkEventKey *event)
 int
 main (int argc, char *argv[])
 {
-    GtkWidget *window, *terminal, *scrollbar, *design;
+    GtkWidget *window, *terminal, *design;
     GError *icon_error = NULL;
     GdkPixbuf *icon;
     GdkGeometry geo_hints;
@@ -100,22 +103,12 @@ main (int argc, char *argv[])
     gtk_init (&argc, &argv);
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     terminal = vte_terminal_new ();
-    if( TINYTERM_SCROLLBAR)
-      scrollbar = gtk_vscrollbar_new (VTE_TERMINAL (terminal)->adjustment);
     design = gtk_hbox_new (FALSE, 0);
 
     /* Terminal font*/
     //PangoFontDescription * font = pango_font_description_from_string("ProggyTinyTT Regular 12");
     PangoFontDescription * font = pango_font_description_from_string( TINYTERM_FONT);
     vte_terminal_set_font ( (VteTerminal *)terminal, font);
-
-    /* Set window icon */
-    icon = gdk_pixbuf_new_from_file (TINYTERM_ICON_PATH, &icon_error);
-    if (!icon) {
-        fprintf (stderr, "%s\n", icon_error->message);
-        g_error_free (icon_error);
-    }
-    gtk_window_set_icon (GTK_WINDOW (window), icon);
 
     /* Set window title */
     gtk_window_set_title (GTK_WINDOW (window), "TinyTerm");
@@ -156,7 +149,6 @@ main (int argc, char *argv[])
 
     /* Put all widgets together and show the result */
     gtk_box_pack_start (GTK_BOX (design), terminal, TRUE, TRUE, 0);
-    gtk_box_pack_start (GTK_BOX (design), scrollbar, FALSE, FALSE, 0);
     gtk_container_add (GTK_CONTAINER (window), design);
     gtk_widget_show_all (window);
     gtk_main ();
