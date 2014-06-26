@@ -14,5 +14,5 @@ add_executable (tinyterm "${SOURCE_DIR}/tinyterm.c")
 target_link_libraries (tinyterm ${VTE_LIBRARIES})
 
 install (TARGETS tinyterm
-    DESTINATION /usr/bin)
+    RUNTIME DESTINATION /usr/bin)
 

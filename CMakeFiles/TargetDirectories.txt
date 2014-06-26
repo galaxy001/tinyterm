@@ -1,0 +1,1 @@
+/home/kirino/tinyterm/CMakeFiles/tinyterm.dir
