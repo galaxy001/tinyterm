@@ -19,7 +19,6 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <vte/vte.h>
-#include <wordexp.h>
 
 #define TINYTERM_FONT              "Terminus Regular 10" 
 #define TINYTERM_SCROLLBACK_LINES  10000
@@ -44,14 +43,13 @@ on_key_press (GtkWidget *terminal, GdkEventKey *event)
 int
 main (int argc, char *argv[])
 {
-    GtkWidget *window, *terminal, *design;
+    GtkWidget *window, *terminal;
     GdkGeometry geo_hints;
 
     /* Init gtk and all widgets */
     gtk_init (&argc, &argv);
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     terminal = vte_terminal_new ();
-    design = gtk_hbox_new (FALSE, 0);
 
     /* Terminal font*/
     PangoFontDescription * font = pango_font_description_from_string( TINYTERM_FONT);
@@ -95,8 +93,7 @@ main (int argc, char *argv[])
     vte_terminal_set_word_chars (VTE_TERMINAL (terminal), TINYTERM_WORD_CHARS);
 
     /* Put all widgets together and show the result */
-    gtk_box_pack_start (GTK_BOX (design), terminal, TRUE, TRUE, 0);
-    gtk_container_add (GTK_CONTAINER (window), design);
+    gtk_container_add (GTK_CONTAINER (window), terminal);
     gtk_widget_show_all (window);
     gtk_main ();
 
