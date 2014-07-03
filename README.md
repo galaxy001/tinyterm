@@ -27,11 +27,10 @@ too much and stay tuned for a release in the far future... ;-)
 
 - 字體被設置爲 Terminus Regular 10
 - 去掉了滾動欄和原本的配置文件 config.h.in
-- Copy selection with CTRL-SHIFT-C
-- Paste at cursor position with CTRL-SHIFT-V
+- CTRL-SHIFT-C/V 複製粘貼的功能被去除了
 - CTRL-SHIFT-X 運行選擇內容的功能已經被去除
 - Intelligent selection behavior: A double-click will mark a word/path/email/url
-- Scrollback buffer initially set to 10000 lines
+- 取消了行回滾的限制。
 
 ## Requirements
 
@@ -55,8 +54,3 @@ got compared to some other terminal emulators:
      4.1 MiB  + 668.0 KiB  =   4.7 MiB  tinyterm
      5.1 MiB  + 282.5 KiB  =   5.4 MiB  xterm
      5.8 MiB  +   1.2 MiB  =   7.0 MiB  xfce4-terminal
-
-htop 上的測試：
-
-    11M + 9M = 20M  舊版 tinyterm
-    9M  + 7M = 16M  新版 tinyterm
