@@ -21,24 +21,7 @@
 #include <vte/vte.h>
 
 #define TINYTERM_FONT              "Terminus Regular 10" 
-#define TINYTERM_SCROLLBACK_LINES  10000
 #define TINYTERM_WORD_CHARS        "-A-Za-z0-9:./?%&#_=+@~"
-
-static gboolean
-on_key_press (GtkWidget *terminal, GdkEventKey *event)
-{
-    if (event->state == (GDK_CONTROL_MASK | GDK_SHIFT_MASK )) {
-        switch (event->keyval) {
-            case GDK_C:
-                vte_terminal_copy_clipboard (VTE_TERMINAL (terminal));
-                return TRUE;
-            case GDK_V:
-                vte_terminal_paste_clipboard (VTE_TERMINAL (terminal));
-                return TRUE;
-        }
-    }
-    return FALSE;
-}
 
 int
 main (int argc, char *argv[])
@@ -55,14 +38,9 @@ main (int argc, char *argv[])
     PangoFontDescription * font = pango_font_description_from_string( TINYTERM_FONT);
     vte_terminal_set_font ( (VteTerminal *)terminal, font);
 
-    /* Set window title */
-    gtk_window_set_title (GTK_WINDOW (window), "TinyTerm");
-
     /* Terminal size */
     vte_terminal_set_size ( VTE_TERMINAL (terminal), (glong) 82, (glong) 25);
 
-    /* Set scrollback lines */
-    vte_terminal_set_scrollback_lines (VTE_TERMINAL (terminal), TINYTERM_SCROLLBACK_LINES);
 
     /* Apply geometry hints to handle terminal resizing */
     geo_hints.base_width  = VTE_TERMINAL (terminal)->char_width;
@@ -87,7 +65,6 @@ main (int argc, char *argv[])
     /* Connect signals */
     g_signal_connect (window, "delete-event", gtk_main_quit, NULL);
     g_signal_connect (terminal, "child-exited", gtk_main_quit, NULL);
-    g_signal_connect (terminal, "key-press-event", G_CALLBACK (on_key_press), NULL);
 
     /* Set selection behavior for double-clicks */
     vte_terminal_set_word_chars (VTE_TERMINAL (terminal), TINYTERM_WORD_CHARS);
